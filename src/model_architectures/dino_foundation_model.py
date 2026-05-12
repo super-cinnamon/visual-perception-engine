@@ -39,7 +39,7 @@ class DinoFoundationModel(DinoVisionTransformer, ModelInterfaceBase):
             "num_heads": 6,
             "mlp_ratio": 4,
             "block_fn": partial(Block, attn_class=MemEffAttention),
-            "num_register_tokens": 0,
+            "num_register_tokens": 4,
         },
         "vitb": {
             "embed_dim": 768,
@@ -47,7 +47,7 @@ class DinoFoundationModel(DinoVisionTransformer, ModelInterfaceBase):
             "num_heads": 12,
             "mlp_ratio": 4,
             "block_fn": partial(Block, attn_class=MemEffAttention),
-            "num_register_tokens": 0,
+            "num_register_tokens": 4,
         },
         "vitl": {
             "embed_dim": 1024,
@@ -55,7 +55,7 @@ class DinoFoundationModel(DinoVisionTransformer, ModelInterfaceBase):
             "num_heads": 16,
             "mlp_ratio": 4,
             "block_fn": partial(Block, attn_class=MemEffAttention),
-            "num_register_tokens": 0,
+            "num_register_tokens": 4,
         },
         "vitg": {
             "embed_dim": 1536,
@@ -63,7 +63,7 @@ class DinoFoundationModel(DinoVisionTransformer, ModelInterfaceBase):
             "num_heads": 24,
             "mlp_ratio": 4,
             "block_fn": partial(Block, attn_class=MemEffAttention),
-            "num_register_tokens": 0,
+            "num_register_tokens": 4,
         },
     }
 

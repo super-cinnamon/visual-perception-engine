@@ -76,6 +76,9 @@ class SemanticSegmentationHead(BNHead, ModelInterfaceBase):
     }
 
     dataset_specific_configs = {
+        "road_safety": {
+            "num_classes": 10,
+        },
         "voc2012": {
             "num_classes": 21,
         },

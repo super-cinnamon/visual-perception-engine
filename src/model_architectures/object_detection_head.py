@@ -149,7 +149,7 @@ class ObjectDetector(torch.nn.Module):
         max_objects: int,
     ):
         super().__init__()
-        self.num_classes = num_classes  # background, backpack, stairs
+        self.num_classes = num_classes  # background, pedestrian, cyclist, two-wheeler, four-wheeler, heavy vehicle, road sign, traffic signal, obstacle
         self.conf_thres = conf_thres  # 0.750  # confidence threshold
         self.processing_height = processing_height
         self.processing_width = processing_width
@@ -187,7 +187,7 @@ class ObjectDetector(torch.nn.Module):
             (32, 64, 128, 256, 512),
             (32, 64, 128, 256, 512),
         )
-        aspect_ratios = ((0.5, 1.0, 2.0),) * len(anchor_sizes)
+        aspect_ratios = (0.3, 0.7, 1.0, 2.0,) * len(anchor_sizes)
 
         anchor_generator = AnchorGenerator(sizes=anchor_sizes, aspect_ratios=aspect_ratios)
 
@@ -265,7 +265,16 @@ class ObjectDetector(torch.nn.Module):
 
     @staticmethod
     def label_to_cat(label):
-        label_to_cat = {1: "backpack", 2: "stairs"}  # we are shifting the classes by 1 later on
+        label_to_cat = {
+            1: "pedestrian",
+            2: "cyclist",
+            3: "two-wheeler",
+            4: "four-wheeler",
+            5: "heavy vehicle",
+            6: "road sign",
+            7: "traffic signal",
+            8: "obstacle"
+        }
         return label_to_cat[label]
 
 class ObjectDetectionHead(ModelInterfaceBase, ObjectDetector):
@@ -282,7 +291,7 @@ class ObjectDetectionHead(ModelInterfaceBase, ObjectDetector):
         "img_width_dino": 518,
         "img_height_dino": 518,
         "conf_thres": 0.5,
-        "num_classes": 3,
+        "num_classes": 9,
         "max_objects": 1,
     }
 

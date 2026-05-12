@@ -8,7 +8,7 @@ import numpy as np
 import cv2
 import math
 import os
-from torchvision.transforms import Compose, Resize, Normalize, InterpolationMode
+from torchvision.transforms import Compose, Resize, Normalize, InterpolationMode, RandomRotation, RandomPerspective
 from typing import Tuple
 from argparse import ArgumentParser
 from tqdm import tqdm
@@ -205,7 +205,9 @@ class Resize_CV2(object):
 class NormalizeImage(object):
     """Normlize image by given mean and std."""
 
-    def __init__(self, mean, std):
+    def __init__(
+        self, mean, std
+    ):
         self.__mean = mean
         self.__std = std
 
@@ -338,6 +340,8 @@ class DINOV2PreprocessingTorch(torch.nn.Module, AbstractPreprocessing):
 
         self.custom_to_tensor = CustomToTensor(fm_type)
         self.bgr2rgb = BGR2RGB()
+        self.rotation = RandomRotation(degrees=10)
+        self.perspective = RandomPerspective(distortion_scale=0.2, p=0.5)
         self.normalize = Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         self.add_batch_dim = AddBatchDim()
 
@@ -351,6 +355,8 @@ class DINOV2PreprocessingTorch(torch.nn.Module, AbstractPreprocessing):
         x = self.custom_to_tensor(x[PREPROCESSING_INPUT])
         x = self.bgr2rgb(x)
         x = self.add_batch_dim(x)
+        x = self.rotation(x)
+        x = self.perspective(x)
         x = F.interpolate(
             x,
             (self.target_height, self.target_width),
